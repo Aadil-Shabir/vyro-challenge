@@ -2,7 +2,15 @@
 
 ## Getting Started
 
-Follow these steps to set up the project locally:
+Follow these steps to set up and run the project locally.
+
+### Prerequisites
+- Node.js (>= 16.x)
+- PostgreSQL (NeonDB used as the database)
+- Prisma (used for database ORM)
+- WebSockets (for real-time collaboration)
+
+### Installation
 
 1. **Clone the repository:**
    ```sh
@@ -16,55 +24,58 @@ Follow these steps to set up the project locally:
    ```
 
 3. **Set up environment variables:**
-   - Get the `.env` file from [this link](https://drive.google.com/file/d/1-IUv832alefSpzIpCByz92HlAybYJtqf/view?usp=sharing) and place it in the root of the project.
+   - Get the `.env` file from [this LINK](https://drive.google.com/file/d/1-IUv832alefSpzIpCByz92HlAybYJtqf/view?usp=sharing) and place it in the root directory.
 
-4. **Run the Next.js server:**
+4. **Apply database migrations:**
+   ```sh
+   npx prisma migrate dev --name init
+   ```
+
+5. **Start the Next.js server:**
    ```sh
    npm run dev
    ```
 
-5. **Install and start the WebSocket server:**
-   - Ensure WebSockets are installed and set up.
-   - Run the WebSocket server on port `1234`.
+6. **Install and run the WebSocket server:**
    ```sh
-   npm run websocket
+   npm install -g y-websocket
+   y-websocket --port 1234
    ```
 
 ## Features
 
-- User authentication
-- Create and manage documents
-- Invite collaborators to documents
-- Real-time collaborative text editing
-- Secure APIs with authentication checks
+- **User Authentication**: Secure login and signup.
+- **Create Documents**: Users can create documents.
+- **Invite Collaborators**: Share documents with others for collaboration.
+- **Real-Time Editing**: Multiple users can edit a document simultaneously with changes reflecting in real-time.
+- **Authentication Checks**: All APIs ensure that users are authenticated before performing actions.
 
 ## Technologies Used
 
-- **Next.js** - For the frontend and backend
-- **TypeScript** - For type safety
-- **WebSockets (y-websocket)** - For real-time collaboration
-- **Prisma** - For database management
-- **PostgreSQL** - As the database
-- **Tailwind CSS** - For styling
-- **Better Auth** - For authentication
+- **Next.js** (React framework for the frontend and backend API routes)
+- **TypeScript** (Strongly-typed JavaScript for better maintainability)
+- **Prisma** (ORM for database interactions)
+- **PostgreSQL** (NeonDB as the database provider)
+- **WebSockets** (Real-time collaboration with `y-websocket` and `yjs`)
+- **TailwindCSS** (For styling the UI)
 
-## Future Improvements
+## Future Enhancements
 
-Given more time, I could have:
-- Implemented better real-time presence tracking (e.g., showing who is currently editing)
-- Added more granular permission controls for document access
-- Improved the overall UI/UX with animations and better designs
-- Optimized API performance and database queries
-- Refactored and cleaned up the code for better maintainability
+If more time were available, the following improvements could have been made:
+- **Better Code Structure**: Refactoring for more optimized and scalable code.
+- **More Robust Permission System**: Implementing role-based access control for documents.
+- **Offline Editing Support**: Allowing users to make changes offline and sync later.
+- **More UI Enhancements**: Smoother user experience with better animations and interactions.
 
 ## Contributing
 
-If you want to suggest changes or improvements, feel free to **open an issue** in this repository. I appreciate all contributions! 🚀
+If you want to suggest improvements or report issues, feel free to [open an issue](#) in this repository. Contributions are welcome!
 
 ## Contact
 
-If you have any questions, feel free to reach out to me at **aadil.shabir13@gmail.com**.
+If you have any questions, feel free to reach out:
+📧 **aadil.shabir13@gmail.com**
 
 ## Support
 
-If you've made it this far, please **star this repo** ⭐️ to show your support! It helps me know that you've reviewed it, and I truly appreciate the effort I've put into this. 😊
+⭐ If you've made it this far, please **star this repo** to show your support. It helps me know that people find it useful! 🚀

@@ -1,19 +1,31 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import CardWrapper from "./CardWrapper";
-import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { signIn } from "@/lib/auth-client";
 import FormError from "./FormError";
 import FormSuccess from "./FormSuccess";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useSession } from "@/lib/auth-client";
 
 const SignIn = () => {
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get("callbackUrl") || "/";
     const router = useRouter();
+    const { data: session, isPending } = useSession();
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (isPending) return;
+
+        if (session?.user) {
+            router.replace(callbackUrl);
+        }
+    }, [session, isPending, router, callbackUrl]);
 
     useEffect(() => {
         setError("");
@@ -26,6 +38,7 @@ const SignIn = () => {
             await signIn.social(
                 {
                     provider: "google",
+                    callbackURL: callbackUrl,
                 },
                 {
                     onResponse: () => {
@@ -38,7 +51,7 @@ const SignIn = () => {
                     },
                     onSuccess: () => {
                         setSuccess("Your are loggedIn successfully");
-                        router.replace("/editor");
+                        router.replace(callbackUrl);
                     },
                     onError: (ctx) => {
                         setError(ctx.error.message);

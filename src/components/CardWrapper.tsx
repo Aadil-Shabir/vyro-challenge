@@ -1,6 +1,5 @@
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import Link from "next/link";
 
 interface CardWrapperType {
     children: React.ReactNode;

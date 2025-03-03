@@ -8,16 +8,19 @@ datasource db {
 }
 
 model User {
-    id               String    @id @default(cuid())
+    id               String          @id @default(cuid())
     name             String
     email            String
-    emailVerified    Boolean   @default(false)
+    emailVerified    Boolean         @default(false)
     image            String?
-    createdAt        DateTime  @default(now())
-    updatedAt        DateTime  @updatedAt
-    twoFactorEnabled Boolean   @default(false)
+    createdAt        DateTime        @default(now())
+    updatedAt        DateTime        @updatedAt
+    twoFactorEnabled Boolean         @default(false)
     Session          Session[]
     Account          Account[]
+    Documents        Document[]
+    Collaborations   Collaboration[]
+    Invitation       Invitation[]
 
     @@unique([email])
     @@map("user")
@@ -67,4 +70,40 @@ model Verification {
     updatedAt  DateTime? @updatedAt
 
     @@map("verification")
+}
+
+model Document {
+    id            String          @id @default(uuid())
+    title         String
+    content       String          @db.Text // Stores document content
+    ownerId       String
+    owner         User            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    collaborators Collaboration[] // Many-to-many with users
+    createdAt     DateTime        @default(now())
+    updatedAt     DateTime        @updatedAt
+    Invitation    Invitation[]
+}
+
+model Collaboration {
+    id         String   @id @default(uuid())
+    userId     String
+    documentId String
+    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+    createdAt  DateTime @default(now())
+
+    @@unique([userId, documentId]) // Prevent duplicate invites
+}
+
+model Invitation {
+    id          String   @id @default(cuid())
+    email       String
+    documentId  String
+    document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+    invitedById String
+    invitedBy   User     @relation(fields: [invitedById], references: [id], onDelete: Cascade)
+    token       String   @unique
+    status      String   @default("pending")
+    expiresAt   DateTime
+    createdAt   DateTime @default(now())
 }
